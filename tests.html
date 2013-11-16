@@ -1,0 +1,61 @@
+<html>
+	<head>
+		<title>util.js Simple Tests</title>
+	</head>
+	<body>
+	</body>
+
+	<script type="text/javascript" src="util.js"></script>
+
+	<script type="text/javascript">
+		console.log( '### util.js' );
+		console.log( '### Some simple tests\n##\n#' );
+
+		var str_array = [ 'apple', 'pear', 'orange', 'banana' ],
+			num_array = [ 1, 40, 2, 36, 4, 23, 8, 23, 49, 3, 7, 9, 26 ],
+			object = {
+				string: 'this is a string',
+				number: 2.4,
+				func: function() {}
+			},
+			$body = document.querySelector( 'body' );
+
+
+		console.log( '\n# OBJECT' );
+		console.log( '### Object loop:' );
+		object.each( function( key, value ) {
+			console.log( key + ' =', value );
+		});
+
+		console.log( '\n### Object search success:' );
+		var search_succeed = object.search( function( key, value ) {
+			if( value == 'this is a string' ) {
+				return true;
+			}
+		});
+		console.log( search_succeed );
+
+		console.log( '\n### Object search fail:' );
+		var search_fail = object.search( function( key, value ) {
+			if( value == 'sthis is a string' ) {
+				return true;
+			}
+		});
+		console.log( search_fail );
+
+		console.log( '\n### Object search max in num array:' );
+		var search_max = num_array.search( function( key, value, found_key ) {
+			found_key = found_key || 0;
+			if( value > num_array[found_key] ) {
+				return true;
+			}
+		});
+		console.log( search_max );
+
+
+		console.log( '\n# ELEMENT' );
+		console.log( '### Set background black' );
+		console.log( $body.css({ 'background-color': '#333' }));
+	</script>
+
+</html>
