@@ -1,19 +1,5 @@
 // Useful functions
 var util = {
-	each: function( data, callback ) {
-		// Array
-		if( typeof( data.length ) == 'number' ) {
-			for( var i = 0; i < data.length; i++ ) {
-				callback( i, data[i] );
-			}
-			return;
-		}
-		// Object
-		for( key in data ) {
-			callback( key, data[key] );
-		}
-	},
-
 	ajax: function( method, url, options ) {
 		var req = new XMLHttpRequest();
 		req.onreadystatechange = function() {
@@ -33,7 +19,7 @@ var util = {
 		req.send();
 	},
 
-	approach: function( start, finish, step, callback ) {
+	approach: function( start, finish, step, func ) {
 
 	}
 };
@@ -48,4 +34,33 @@ Element.prototype.css = function( data ) {
 // Animate an element
 Element.prototype.animate = function( duration, data ) {
 	console.log('hi');
+}
+
+
+// Loop array
+Array.prototype.each = function( each_func ) {
+	for( var i=0; i<this.length; i++ ) {
+		each_func( i, this[i] );
+	}
+}
+
+
+// Loop object
+Object.prototype.each = function( each_func ) {
+	for( key in this ) {
+		if( this.hasOwnProperty( key ) ) {
+			each_func( key, this[key] );
+		}
+	}
+}
+// Search object
+Object.prototype.search = function( search_func ) {
+	var found_key;
+	this.each( function( key, value ) {
+		if( search_func( key, value, found_key ) ) {
+			found_key = key;
+		}
+	});
+	
+	return this[found_key] || null;
 }
