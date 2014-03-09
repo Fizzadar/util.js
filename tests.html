@@ -82,6 +82,26 @@
                 .parentNode.build( 'div' ).addClass( 'green' ).addClass( 'box' )
                 .parentNode.build( 'div' ).addClass( 'orange' ).addClass( 'box' )
                 .parentNode.build( 'div' ).addClass( 'purple' ).addClass( 'box' );
+
+            print( '# [6] Build a table' );
+            var $table = util.element( 'body' ).build( 'table' )
+                .build( 'thead' )
+                    .build( 'tr' )
+                        .each( [ 'id', 'header 1', 'header 2', 'header 3' ], function( key, value ) {
+                            this.build( 'th' ).innerHTML = value;
+                        })
+                    .parentNode
+                .parentNode
+                .build( 'tbody' )
+                    .each( [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ], function( key, value ) {
+                        var $tr = this.build( 'tr' )
+                            .build( 'td' ).set( 'innerHTML', value ).parentNode;
+                        $tr.each( [ 'content 1', 'content 2', 'content 3' ], function( key, value ) {
+                            this.build( 'td' ).innerHTML = value;
+                        });
+                    })
+                .parentNode;
+            console.log( $table );
         };
         setTimeout( function() { window.addEventListener( 'keyup', keyListen ) }, 500 );
     </script>
