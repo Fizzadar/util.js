@@ -1,61 +1,89 @@
 <html>
-	<head>
-		<title>util.js Simple Tests</title>
-	</head>
-	<body>
-	</body>
+<head>
+    <title>util.js Simple Tests</title>
 
-	<script type="text/javascript" src="util.js"></script>
+    <style type="text/css">
+        body {
+            margin: 10px;
+        }
 
-	<script type="text/javascript">
-		console.log( '### util.js' );
-		console.log( '### Some simple tests\n##\n#' );
+        .console {
+            float: left;
+            width: 250px;
+            height: 400px;
+            border: 1px dotted #D7D7D7;
+            font-size: 11px;
+            font-family: Verdana;
+            background: white;
+        }
 
-		var str_array = [ 'apple', 'pear', 'orange', 'banana' ],
-			num_array = [ 1, 40, 2, 36, 4, 23, 8, 23, 49, 3, 7, 9, 26 ],
-			object = {
-				string: 'this is a string',
-				number: 2.4,
-				func: function() {}
-			},
-			$body = document.querySelector( 'body' );
+        .box {
+            float: left;
+            width: 50px;
+            height: 50px;
+            margin: 10px;
+        }
+
+        .red {
+            background: red;
+        }
+        .orange {
+            background: orange;
+        }
+        .green {
+            background: green;
+        }
+        .purple {
+            background: purple;
+        }
+    </style>
+</head>
+<body>
+    <div class="console"></div>
+    <div class="red box"></div>
+    <div class="green box"></div>
+
+    <script type="text/javascript" src="util.js"></script>
+    <script type="text/javascript">
+        'use strict';
+
+        var $console = util.element( '.console' ),
+            print = function( text ) {
+                $console.append( text.replace( /\n/g, '<br />' ) + '<br />' );
+                console.log( text );
+            };
+
+        print( '### util.js' );
+        setTimeout( function() { print( '### Some simple tests\n### Press any key to start\n' ) }, 500 );
 
 
-		console.log( '\n# OBJECT' );
-		console.log( '### Object loop:' );
-		object.each( function( key, value ) {
-			console.log( key + ' =', value );
-		});
+        function keyListen( ev ) {
+            // don't do multiple runs
+            window.removeEventListener( 'keyup', keyListen );
 
-		console.log( '\n### Object search success:' );
-		var search_succeed = object.search( function( key, value ) {
-			if( value == 'this is a string' ) {
-				return true;
-			}
-		});
-		console.log( search_succeed );
+            print( '# [1] Swap red/green' );
+            var $greens = util.elements( '.green' ),
+                $reds = util.elements( '.red' );
+            $greens.removeClass( 'green' ).addClass( 'red' );
+            $reds.removeClass( 'red' ).addClass( 'green' );
 
-		console.log( '\n### Object search fail:' );
-		var search_fail = object.search( function( key, value ) {
-			if( value == 'sthis is a string' ) {
-				return true;
-			}
-		});
-		console.log( search_fail );
+            print( '# [2] Select body, set purple' );
+            util.element( 'body' ).addClass( 'purple' );
 
-		console.log( '\n### Object search max in num array:' );
-		var search_max = num_array.search( function( key, value, found_key ) {
-			found_key = found_key || 0;
-			if( value > num_array[found_key] ) {
-				return true;
-			}
-		});
-		console.log( search_max );
+            print( '# [3] Chained .sets on body, set orange' );
+            util.element( 'body' ).set( 'className', '' ).set( 'className', 'orange' );
 
+            print( '# [4] Setting CSS margin top on body' );
+            util.element( 'body' ).css({ 'margin-top': '30px' });
 
-		console.log( '\n# ELEMENT' );
-		console.log( '### Set background black' );
-		console.log( $body.css({ 'background-color': '#333' }));
-	</script>
-
+            print('# [5] Build some basic boxes' );
+            util.element( 'body' ).build( 'div' ).addClass( 'red' ).addClass( 'box' )
+                .parentNode.build( 'div' ).addClass( 'green' ).addClass( 'box' )
+                .parentNode.build( 'div' ).addClass( 'green' ).addClass( 'box' )
+                .parentNode.build( 'div' ).addClass( 'orange' ).addClass( 'box' )
+                .parentNode.build( 'div' ).addClass( 'purple' ).addClass( 'box' );
+        };
+        setTimeout( function() { window.addEventListener( 'keyup', keyListen ) }, 500 );
+    </script>
+</body>
 </html>
